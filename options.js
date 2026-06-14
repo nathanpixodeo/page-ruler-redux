@@ -1,14 +1,6 @@
 (function() {
 
 	/*
-	 * Track pageview
-	 */
-	chrome.runtime.sendMessage({
-		action:	'trackPageview',
-		page:	'options.html'
-	});
-
-	/*
 	 * Locale
 	 */
 	var elements = document.getElementsByTagName('*');
@@ -35,48 +27,9 @@
 
 	// change
 	statisticsField.addEventListener('change', function(e) {
-
-		// disabling option
-		if (!this.checked) {
-
-			// track event before saving the setting so we can see how many people disable it
-			chrome.runtime.sendMessage(
-				{
-					action:	'trackEvent',
-					args:	['Settings', 'Statistics', '0']
-				},
-				function() {
-
-					console.log('disabling statistics');
-
-					// save setting
-					chrome.storage.sync.set({
-						'statistics': false
-					});
-
-				}
-			);
-		}
-		// enabling option
-		else {
-
-			console.log('enabling statistics');
-
-			// save setting
-			chrome.storage.sync.set({
-				'statistics': true
-			}, function() {
-
-				// send tracking after the setting is saved so it is sent
-				chrome.runtime.sendMessage(
-					{
-						action:	'trackEvent',
-						args:	['Settings', 'Statistics', '1']
-					}
-				)
-			});
-		}
-
+		chrome.storage.sync.set({
+			'statistics': this.checked
+		});
 	}, this);
 
 	/*
@@ -91,45 +44,9 @@
 
 	// change
 	updateTabField.addEventListener('change', function(e) {
-
-		// do not show
-		if (this.checked) {
-
-			console.log('disabling update tab');
-
-			// save setting
-			chrome.storage.sync.set({
-				'hide_update_tab': true
-			});
-
-			// send tracking after the setting is saved so it is sent
-			chrome.runtime.sendMessage(
-				{
-					action:	'trackEvent',
-					args:	['Settings', 'HideUpdateTab', '1']
-				}
-			);
-
-		}
-		else {
-
-			console.log('enabling update tab');
-
-			// save setting
-			chrome.storage.sync.set({
-				'hide_update_tab': false
-			});
-
-			// send tracking after the setting is saved so it is sent
-			chrome.runtime.sendMessage(
-				{
-					action:	'trackEvent',
-					args:	['Settings', 'HideUpdateTab', '0']
-				}
-			);
-
-		}
-
+		chrome.storage.sync.set({
+			'hide_update_tab': this.checked
+		});
 	});
 
 })();

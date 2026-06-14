@@ -11,10 +11,11 @@ window.__PageRuler = {
     },
     enable: function() {
         var _this = this;
+        var manifest = chrome.runtime.getManifest();
         var styles = this.El.createEl("link", {
             id: "styles",
             rel: "stylesheet",
-            href: chrome.extension.getURL("content.css") + "?" + this.version
+            href: chrome.runtime.getURL("content.css") + "?" + manifest.version
         });
         this.El.appendEl(document.head || document.body || document.documentElement, styles);
         this.elements.toolbar = new this.el.Toolbar();
@@ -481,10 +482,6 @@ window.__PageRuler = {
             e.stopPropagation();
             if (_this.tracking && e.target.tagName.toLowerCase() !== "html") {
                 _this.setTracking(false, true);
-                chrome.runtime.sendMessage({
-                    action: "trackEvent",
-                    args: [ "Action", "Element Mode Click" ]
-                });
             }
         });
     }, {
@@ -515,10 +512,6 @@ window.__PageRuler = {
             this.toolbar.dom.style.setProperty("height", pr.Util.px(height), "important");
             this.toolbar.shiftPage(height);
             this.setTracking(true, true);
-            chrome.runtime.sendMessage({
-                action: "trackEvent",
-                args: [ "Action", "Element Toolbar", "Show" ]
-            });
         },
         hide: function() {
             this.dom.style.removeProperty("display");
@@ -529,10 +522,6 @@ window.__PageRuler = {
             this.els.helpContainer.style.removeProperty("display");
             this.els.elementContainer.style.setProperty("display", "none", "important");
             this.els.navigationContainer.style.setProperty("display", "none", "important");
-            chrome.runtime.sendMessage({
-                action: "trackEvent",
-                args: [ "Action", "Element Toolbar", "Hide" ]
-            });
         },
         generateHelpContainer: function() {
             var container = pr.El.createEl("div", {
@@ -569,10 +558,6 @@ window.__PageRuler = {
             }, {
                 click: function(e) {
                     _this.setElement(_this.element.dom);
-                    chrome.runtime.sendMessage({
-                        action: "trackEvent",
-                        args: [ "Action", "Element Click", "Element" ]
-                    });
                 }
             });
             this.els.element = this.generateTagContainer("element");
@@ -592,15 +577,11 @@ window.__PageRuler = {
             }, {
                 click: function(e) {
                     _this.setElement(pr.El.getParentNode(_this.element.dom));
-                    chrome.runtime.sendMessage({
-                        action: "trackEvent",
-                        args: [ "Action", "Element Click", "Parent" ]
-                    });
                 }
             });
             var upImg = pr.El.createEl("img", {
                 id: "element-toolbar-navigate-up-img",
-                src: chrome.extension.getURL("images/arrow-up.png")
+                src: chrome.runtime.getURL("images/arrow-up.png")
             });
             this.els.up = this.generateTagContainer("up");
             pr.El.appendEl(this.els.upContainer, [ upImg, this.els.up ]);
@@ -610,15 +591,11 @@ window.__PageRuler = {
             }, {
                 click: function(e) {
                     _this.setElement(pr.El.getChildNode(_this.element.dom));
-                    chrome.runtime.sendMessage({
-                        action: "trackEvent",
-                        args: [ "Action", "Element Click", "Child" ]
-                    });
                 }
             });
             var downImg = pr.El.createEl("img", {
                 id: "element-toolbar-navigate-down-img",
-                src: chrome.extension.getURL("images/arrow-down.png")
+                src: chrome.runtime.getURL("images/arrow-down.png")
             });
             this.els.down = this.generateTagContainer("down");
             pr.El.appendEl(this.els.downContainer, [ downImg, this.els.down ]);
@@ -628,15 +605,11 @@ window.__PageRuler = {
             }, {
                 click: function(e) {
                     _this.setElement(pr.El.getPreviousSibling(_this.element.dom));
-                    chrome.runtime.sendMessage({
-                        action: "trackEvent",
-                        args: [ "Action", "Element Click", "Previous" ]
-                    });
                 }
             });
             var previousImg = pr.El.createEl("img", {
                 id: "element-toolbar-navigate-previous-img",
-                src: chrome.extension.getURL("images/arrow-left.png")
+                src: chrome.runtime.getURL("images/arrow-left.png")
             });
             this.els.previous = this.generateTagContainer("previous");
             pr.El.appendEl(this.els.previousContainer, [ previousImg, this.els.previous ]);
@@ -646,15 +619,11 @@ window.__PageRuler = {
             }, {
                 click: function(e) {
                     _this.setElement(pr.El.getNextSibling(_this.element.dom));
-                    chrome.runtime.sendMessage({
-                        action: "trackEvent",
-                        args: [ "Action", "Element Click", "Next" ]
-                    });
                 }
             });
             var nextImg = pr.El.createEl("img", {
                 id: "element-toolbar-navigate-next-img",
-                src: chrome.extension.getURL("images/arrow-right.png")
+                src: chrome.runtime.getURL("images/arrow-right.png")
             });
             this.els.next = this.generateTagContainer("next");
             pr.El.appendEl(this.els.nextContainer, [ nextImg, this.els.next ]);
@@ -686,10 +655,6 @@ window.__PageRuler = {
             }, {
                 change: function(e) {
                     _this.setTracking(this.checked, false);
-                    chrome.runtime.sendMessage({
-                        action: "trackEvent",
-                        args: [ "Action", "Tracking Mode Element", this.checked && "On" || "Off" ]
-                    });
                 }
             });
             this.els.trackingInput = input;
@@ -717,10 +682,6 @@ window.__PageRuler = {
             } else {
                 this.toolbar.ruler.ruler.classList.remove("tracking");
             }
-            chrome.runtime.sendMessage({
-                action: "trackEvent",
-                args: [ "Action", "Tracking Mode", tracking && "On" || "Off" ]
-            });
             if (!!toggleInput) {
                 this.els.trackingInput.checked = tracking;
             }
@@ -1584,7 +1545,7 @@ window.__PageRuler = {
             }, {}, pr.Util.locale("toolbarEnableElementMode"));
             var img = pr.El.createEl("img", {
                 id: "toolbar-element-toggle-img",
-                src: chrome.extension.getURL("images/element-mode-toggle.png")
+                src: chrome.runtime.getURL("images/element-mode-toggle.png")
             });
             var container = pr.El.createEl("div", {
                 id: "toolbar-element-toggle",
@@ -1619,17 +1580,9 @@ window.__PageRuler = {
             });
             var width = this.generatePixelInput("width", pr.Util.locale("toolbarWidth"), function(e) {
                 _this.ruler.setWidth(this.value);
-                chrome.runtime.sendMessage({
-                    action: "trackEvent",
-                    args: [ "Action", "Ruler Change", "Width" ]
-                });
             });
             var height = this.generatePixelInput("height", pr.Util.locale("toolbarHeight"), function(e) {
                 _this.ruler.setHeight(this.value);
-                chrome.runtime.sendMessage({
-                    action: "trackEvent",
-                    args: [ "Action", "Ruler Change", "Height" ]
-                });
             });
             pr.El.appendEl(container, [ width, height ]);
             return container;
@@ -1642,31 +1595,15 @@ window.__PageRuler = {
             });
             var left = this.generatePixelInput("left", pr.Util.locale("toolbarLeft"), function(e) {
                 _this.ruler.setLeft(this.value, true);
-                chrome.runtime.sendMessage({
-                    action: "trackEvent",
-                    args: [ "Action", "Ruler Change", "Left" ]
-                });
             });
             var top = this.generatePixelInput("top", pr.Util.locale("toolbarTop"), function(e) {
                 _this.ruler.setTop(this.value, true);
-                chrome.runtime.sendMessage({
-                    action: "trackEvent",
-                    args: [ "Action", "Ruler Change", "Top" ]
-                });
             });
             var right = this.generatePixelInput("right", pr.Util.locale("toolbarRight"), function(e) {
                 _this.ruler.setRight(this.value, true);
-                chrome.runtime.sendMessage({
-                    action: "trackEvent",
-                    args: [ "Action", "Ruler Change", "Right" ]
-                });
             });
             var bottom = this.generatePixelInput("bottom", pr.Util.locale("toolbarBottom"), function(e) {
                 _this.ruler.setBottom(this.value, true);
-                chrome.runtime.sendMessage({
-                    action: "trackEvent",
-                    args: [ "Action", "Ruler Change", "Bottom" ]
-                });
             });
             pr.El.appendEl(container, [ left, top, right, bottom ]);
             return container;
@@ -1788,7 +1725,7 @@ window.__PageRuler = {
             });
             var img = pr.El.createEl("img", {
                 id: "toolbar-close",
-                src: chrome.extension.getURL("images/close.png"),
+                src: chrome.runtime.getURL("images/close.png"),
                 title: pr.Util.locale("toolbarClose", "lowercase")
             }, {
                 click: function(e) {
@@ -1807,7 +1744,7 @@ window.__PageRuler = {
             });
             this.els.help = pr.El.createEl("img", {
                 id: "toolbar-help",
-                src: chrome.extension.getURL("images/help-white.png"),
+                src: chrome.runtime.getURL("images/help-white.png"),
                 title: pr.Util.locale("toolbarHelp", "lowercase")
             }, {
                 click: function(e) {
@@ -1827,7 +1764,7 @@ window.__PageRuler = {
             });
             this.els.dock = pr.El.createEl("img", {
                 id: "toolbar-dock",
-                src: chrome.extension.getURL("images/dock-bottom.png"),
+                src: chrome.runtime.getURL("images/dock-bottom.png"),
                 title: pr.Util.locale("toolbarDockBottom", "lowercase")
             }, {
                 click: function(e) {
@@ -1845,7 +1782,7 @@ window.__PageRuler = {
             pr.El.removeClass(this.dom, "page-ruler-" + oldPosition);
             this.position = position;
             pr.El.addClass(this.dom, "page-ruler-" + position);
-            this.els.dock.setAttribute("src", chrome.extension.getURL("images/dock-" + oldPosition + ".png"));
+            this.els.dock.setAttribute("src", chrome.runtime.getURL("images/dock-" + oldPosition + ".png"));
             this.els.dock.setAttribute("title", pr.Util.locale("toolbarDock" + (oldPosition === "top" ? "Top" : "Bottom"), "lowercase"));
             this.shiftPage();
             if (!!save) {
