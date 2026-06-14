@@ -121,8 +121,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 		case "borderSearch":
 			chrome.tabs.captureVisibleTab({ format: "png" }, async function(dataUrl) {
 				try {
-					const response = await fetch(dataUrl);
-					const blob = await response.blob();
+				const fetchResp = await fetch(dataUrl);
+				const blob = await fetchResp.blob();
 					const bitmap = await createImageBitmap(blob);
 					const canvas = new OffscreenCanvas(sender.tab.width, sender.tab.height);
 					const ctx = canvas.getContext("2d");
