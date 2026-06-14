@@ -35,26 +35,17 @@
 - Removed `tabs` permission (unnecessary with `activeTab` + `scripting`)
 - Removed `host_permissions` (unnecessary with `activeTab` + `scripting`)
 
-### v1.x History
+### v1.x History (original Page Ruler Redux by Esteban Rocha)
 
 #### 1.2.0 (February 28, 2019)
 - Translation fixes, design updates
 - Google Analytics opt-out option in settings
 - New logo and branding
 
-#### 1.1.7 (February 15, 2019)
-- Bug fixes
-
-#### 1.1.5 (February 13, 2019)
-- Bug fixes and font improvements
-
 #### 1.1.0 (March 21, 2018)
 - Reduced extension permissions
 - Better arrow icons
 - Element tracking mode and border search improvements
-
-#### 1.0.1 (February 20, 2018)
-- Crosshair bug fix
 
 #### 1.0.0 (February 8, 2018)
 - Initial fork from original Page Ruler

@@ -149,5 +149,6 @@ This project is open source. See the [LICENSE](LICENSE) file for details.
 ## Acknowledgments
 
 - **Peter Newnham** — Author of the original Page Ruler
-- **Esteban Rocha** — Creator of Page Ruler Redux (forked to remove malware tracking)
+- **Esteban Rocha** — Creator of Page Ruler Redux
+- **nathanpixodeo** — Current maintainer (MV3 upgrade, optimizations)
 - **Contributors** — All translators and bug reporters
